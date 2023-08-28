@@ -72,27 +72,27 @@ wire                        zero;
  */
 
 // Instruction fetch modules: PC, NPC and Instruction_Memory
-pc ZAN_PC(.clk(clk),
+pc CPU_PC(.clk(clk),
           .rst(rst),
           .npc(npc),
           .pc(pc));
 
-npc ZAN_NPC(.npc_op(npc_op),
+npc CPU_NPC(.npc_op(npc_op),
             .pc(pc),
             .imm16(imm16),
             .imm26(imm26),
             .npc(npc));
 
 // Simulation instruction memory
-// instruction_memory ZAN_INSTR_MEM(.pc_addr(pc[11:2]),
+// instruction_memory CPU_INSTR_MEM(.pc_addr(pc[11:2]),
 //                                 .instruction(instruction));
 
 // IP catalog instruction memory
-instruction_memory_ip ZAN_INSTR_MEM_IP (.a(pc[11:2]),       // input wire [9 : 0] a
+instruction_memory_ip CPU_INSTR_MEM_IP (.a(pc[11:2]),       // input wire [9 : 0] a
                                         .spo(instruction)); // output wire [31 : 0] spo
 
 // Module: Control Unit
-control_unit ZAN_CU(.opcode(opcode),
+control_unit CPU_CU(.opcode(opcode),
                     .sa(sa),
                     .func(func),
                     .zero(zero),
@@ -106,14 +106,14 @@ control_unit ZAN_CU(.opcode(opcode),
                     .npc_op(npc_op));
 
 // // Module: Data Memory
-// data_memory ZAN_DATA_MEM(.clk(clk),
+// data_memory CPU_DATA_MEM(.clk(clk),
 //                          .mem_write(mem_write),
 //                          .mem_addr(alu_result[11:2]),
 //                          .write_mem_data(reg2_data),
 //                          .read_mem_data(read_mem_data));
 
 // IP catalog data memory
-data_memory_ip ZAN_DATA_MEM (
+data_memory_ip CPU_DATA_MEM (
                    .clk(clk),             // input wire clk
                    .a(alu_result[11:2]),  // input wire [9 : 0] a
                    .d(reg2_data),         // input wire [31 : 0] d
@@ -122,24 +122,29 @@ data_memory_ip ZAN_DATA_MEM (
                );
 
 // Module: Multiplexers
-mux_reg_dst ZAN_MUX_REGDST(.reg_dst(reg_dst),
+mux_reg_dst CPU_MUX_REGDST(.reg_dst(reg_dst),
                            .mux_in_0(rt),
                            .mux_in_1(rd),
                            .mux_out(reg_dst_out));
 
-mux_reg_src ZAN_MUX_REGSRC(.reg_src(reg_src),
+mux_reg_src CPU_MUX_REGSRC(.reg_src(reg_src),
                            .mux_in_0(alu_result),
                            .mux_in_1(read_mem_data),
                            .mux_in_2(ext_out),
                            .mux_out(reg_src_out));
 
-mux_alu_src ZAN_MUX_ALUSRC(.alu_src(alu_src),
+mux_alu_src CPU_MUX_ALUSRC1(.alu_src(alu_src),
+                           .mux_in_0(reg1_data),
+                           .mux_in_1(ext_out),
+                           .mux_out(alu_src_out));
+
+mux_alu_src CPU_MUX_ALUSRC2(.alu_src(alu_src),
                            .mux_in_0(reg2_data),
                            .mux_in_1(ext_out),
                            .mux_out(alu_src_out));
 
 // Module: Register File
-register_file ZAN_REG_FILE(.clk(clk),
+register_file CPU_REG_FILE(.clk(clk),
                            .reg_write(reg_write),
                            .read_reg1_addr(rs),
                            .read_reg2_addr(rt),
@@ -150,7 +155,7 @@ register_file ZAN_REG_FILE(.clk(clk),
                            .debug_reg_single(debug_reg_single));
 
 // Module: ALU
-alu ZAN_ALU(.alu_op(alu_op),
+alu CPU_ALU(.alu_op(alu_op),
             .alu_input1(reg1_data),
             .alu_input2(alu_src_out),
             .sa(sa),
@@ -158,7 +163,7 @@ alu ZAN_ALU(.alu_op(alu_op),
             .zero(zero));
 
 // Module: extender shifter two-in-one
-extend ZAN_EXTEND(.imm16(imm16),
+extend CPU_EXTEND(.imm16(imm16),
                   .ext_op(ext_op),
                   .ext_out(ext_out));
 endmodule
