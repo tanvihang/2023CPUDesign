@@ -16,7 +16,7 @@
 `define FUNC_ADD        6'b100000  // ADD func code
 `define FUNC_ADDU       6'b100001  // ADDU func code
 `define FUNC_SUB        6'b100010  // SUB func code
-`define FUNC_SUBU       6'b100010  // SUBU func code
+`define FUNC_SUBU       6'b100011  // SUBU func code
 `define FUNC_AND        6'b100100  // ADD func code
 `define FUNC_OR         6'b100101  // OR func code
 `define FUNC_XOR        6'b100110  // XOR func code
