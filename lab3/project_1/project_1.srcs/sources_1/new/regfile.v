@@ -17,12 +17,11 @@ module reg_file(
 
            output wire[7:0]  debug_reg_single // Debug signal
        );
+// General purpose register
+reg[31:0] gpr[31:0];
 
 // Debug signal output
 assign debug_reg_single = gpr[1][7:0];
-
-// General purpose register
-reg[31:0] gpr[31:0];
 
 // Read data from register
 assign reg1_data = (read_reg1_addr == 0) ? `INITIAL_VAL : gpr[read_reg1_addr];

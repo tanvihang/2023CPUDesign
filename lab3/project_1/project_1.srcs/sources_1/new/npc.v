@@ -1,8 +1,7 @@
 `timescale 1ns / 1ps
 `include "instruction_head.v"
 
-/* Module: Next program counter
- */
+// Module: Next program counter
 
 module npc(
            input wire[`NPC_OP_LENGTH - 1:0] npc_op, // NPCOp control signal
