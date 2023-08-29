@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`include "instruction_h.v"
+`include "instruction_head.v"
 
 module instruction_m(
         //PC address 

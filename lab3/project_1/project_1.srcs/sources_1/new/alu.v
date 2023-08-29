@@ -26,11 +26,11 @@ assign zero       = (alu_reg == 0) ? 1'b1 : 1'b0;
 wire[4:0] displacement;
 assign displacement =
        (cu_alu_op == `ALU_OP_SLL ||
-        cu_alu_op == `ALU_OP_SRL) ? sa : alu_input_1[4:0];
+        cu_alu_op == `ALU_OP_SRL) ? sa : alu_input1[4:0];
 
 // compare rs and rt
 wire[31:0] diff;
-assign diff = (alu_input_1 < alu_input_2) ? 32'h00000001 : 32'h00000000;
+assign diff = (alu_input1 < alu_input2) ? 32'h00000001 : 32'h00000000;
 
 always @ (*) begin
     case (alu_op)
@@ -39,15 +39,16 @@ always @ (*) begin
         `ALU_OP_SUB: // -
             alu_reg <= {alu_input1[31], alu_input1} - {alu_input2[31], alu_input2};
         `ALU_OP_AND: // &
-            alu_reg <= {alu_input1[31],alu_input1} and {alu_input2[31], alu_input2};
+            alu_reg <= {alu_input1[31],alu_input1} & {alu_input2[31], alu_input2};
         `ALU_OP_OR: // |
-            alu_reg <= {alu_input1[31],alu_input1} or {alu_input2[31], alu_input2};
+            alu_reg <= {alu_input1[31],alu_input1} | {alu_input2[31], alu_input2};
         `ALU_OP_XOR: // xor
-            alu_reg <= {alu_input1[31],alu_input1} xor {alu_input2[31], alu_input2};
+            alu_reg <= (({alu_input1[31], alu_input1} & ~{alu_input2[31], alu_input2}) |
+                                (~{alu_input1[31], alu_input1} & {alu_input2[31], alu_input2}));
         `ALU_OP_SLL:
-            alu_reg <= {alu_input_2[31], alu_input_2} << displacement;
+            alu_reg <= {alu_input2[31], alu_input2} << displacement;
         `ALU_OP_SRL:
-            alu_reg <= {alu_input_2[31], alu_input_2} >> displacement;
+            alu_reg <= {alu_input2[31], alu_input2} >> displacement;
         `ALU_OP_SLT:
             alu_reg <= diff;
         default:
