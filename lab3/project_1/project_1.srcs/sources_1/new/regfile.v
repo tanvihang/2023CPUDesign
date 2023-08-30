@@ -3,7 +3,7 @@
 
 // Module: Register File
 
-module reg_file(
+module regfile(
            input wire        clk,
            input wire        reg_write,       // "Register Write" signal
  
