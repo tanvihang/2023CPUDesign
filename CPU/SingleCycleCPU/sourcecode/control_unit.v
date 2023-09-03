@@ -30,7 +30,7 @@ module control_unit(
 	
 	//输出的控制信号
 	output wire [`ALU_OP_LENGTH-1 : 0] alu_op,
-	output wire reg_dst,
+	output wire [`REG_DST_LENGTH - 1:0] reg_dst,
 	output wire reg_write,
 	output wire alu_src,
 	output wire mem_write,

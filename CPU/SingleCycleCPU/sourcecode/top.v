@@ -39,9 +39,14 @@ module top(
 		.pc(pc)
 	);
 	
-	instruction_memory MyInstMem(
-		.pc_address(pc[11:2]),
-		.instruction(instruction)
+	//instruction_memory MyInstMem(
+	//	.pc_address(pc[11:2]),
+	//	.instruction(instruction)
+	//);
+	
+	inst_rom MyInstRom(
+		.a(pc[11:2]),
+		.spo(instruction)
 	);
 
 	//以后这边添加缓冲寄存器IF/ID
@@ -69,7 +74,7 @@ module top(
 	
 	//控制信号
 	wire[`ALU_OP_LENGTH - 1:0]  cu_alu_op;
-	wire                        cu_reg_dst;
+	wire[`REG_DST_LENGTH - 1:0] cu_reg_dst;
 	wire                        en_reg_write;
 	wire                        cu_alu_src;
 	wire                        en_mem_write;
@@ -131,6 +136,7 @@ module top(
 		.read_reg1_addr(rs),
 		.read_reg2_addr(rt),
 		.write_reg_addr(reg_dst_out), 
+		
 		.write_data(reg_src_out), //写回阶段确定的
 		
 		.reg1_data(reg1_data),
@@ -145,6 +151,7 @@ module top(
 		.pc(pc),
 		.imm16(imm16),
 		.imm26(imm26),
+		.reg1_data(reg1_data),
 		.npc_op(cu_npc_op),
 		
 		.npc(npc),
@@ -164,7 +171,7 @@ module top(
 	alu MyALU(
 		.alu_op(cu_alu_op),
 		.alu_input1(reg1_data),
-		.alu_input2(reg2_data),
+		.alu_input2(alu_src_out),
 		.sa(sa),
 		
 		.alu_result(alu_result)
@@ -172,13 +179,21 @@ module top(
 	
 	//第四阶段：访存阶段
 	wire[31:0] read_mem_data;
-	data_memory MyDataMemory(
+	//data_memory MyDataMemory(
+	//	.clk(clk),
+	//	.mem_write(en_mem_write),
+	//	.mem_addr(alu_result[11:2]),
+	//	.write_mem_data(reg2_data),
+	//	
+	//	.read_mem_data(read_mem_data)
+	//);
+	
+	data_ram MyDataRam(
 		.clk(clk),
-		.mem_write(en_mem_write),
-		.mem_addr(alu_result),
-		.write_mem_data(rt),
-		
-		.read_mem_data(read_mem_data)
+		.a(alu_result[11:2]),
+		.d(reg2_data),
+		.we(en_mem_write),
+		.spo(read_mem_data)
 	);
 	
 	//第五阶段：写回阶段

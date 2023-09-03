@@ -23,7 +23,7 @@
 
 //在testbench的时候读入指令文件，然后写进去先
 module instruction_memory(
-		input wire[31:0] pc_address,
+		input wire[11:2] pc_address,
 		output wire[31:0] instruction
     );
 	
