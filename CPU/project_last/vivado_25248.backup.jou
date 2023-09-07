@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Wed Sep  6 16:54:55 2023
+# Process ID: 25248
+# Current directory: C:/Users/tvh10/Desktop/MIPSlearn/project_last
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent17840 C:\Users\tvh10\Desktop\MIPSlearn\project_last\project_1.xpr
+# Log file: C:/Users/tvh10/Desktop/MIPSlearn/project_last/vivado.log
+# Journal file: C:/Users/tvh10/Desktop/MIPSlearn/project_last\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/tvh10/Desktop/MIPSlearn/project_last/project_1.xpr
+launch_simulation
+open_wave_config C:/Users/tvh10/Desktop/MIPSlearn/project_last/testbench_behav.wcfg
+source testbench.tcl
+update_compile_order -fileset sources_1
+close_sim
+launch_simulation
+open_wave_config C:/Users/tvh10/Desktop/MIPSlearn/project_last/testbench_behav.wcfg
+source testbench.tcl
+close_sim
